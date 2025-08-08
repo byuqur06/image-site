@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel</title>
+</head>
+<body>
+  <h2>Ürün Ekle</h2>
+  <form action="/upload" method="POST" enctype="multipart/form-data">
+    <input type="file" name="image">
+    <button type="submit">Yükle</button>
+  </form>
+  <hr>
+  <h3>Yüklenen Görseller</h3>
+  <ul>
+    <script>
+      fetch('/uploads')
+        .then(res => res.text())
+        .then(html => document.body.innerHTML += html);
+    </script>
+  </ul>
+</body>
+</html>
