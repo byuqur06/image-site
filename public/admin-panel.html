@@ -2,35 +2,178 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gariban Sefa - Admin Panel</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: #25D366;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .admin-panel {
+      background-color: #ffffff;
+      color: #000;
+      width: 100%;
+      max-width: 800px;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      font-size: 16px;
+    }
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .tab {
+      background-color: #25D366;
+      color: white;
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .tab:hover {
+      transform: scale(1.05);
+    }
+    .tab-content {
+      display: none;
+      margin-top: 20px;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .form-group input[type="text"],
+    .form-group input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .form-group input[type="file"] {
+      display: block;
+    }
+    .preview-img {
+      margin-top: 10px;
+      width: 100px;
+      height: auto;
+      display: none;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .save-button {
+      background-color: #25D366;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s;
+    }
+    .save-button:hover {
+      transform: scale(1.05);
+    }
+    .success-message, .error-message {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .success-message {
+      color: green;
+    }
+    .error-message {
+      color: red;
+    }
+  </style>
 </head>
 <body>
-  <h2>Ürün Ekle (Link ile)</h2>
-  <form action="/add" method="POST">
-    <input type="text" name="name" placeholder="Ürün adı">
-    <input type="text" name="price" placeholder="Fiyat (boşsa teklif al)">
-    <input type="text" name="image" placeholder="Görsel URL (https://...)">
-    <button type="submit">Kaydet</button>
-  </form>
-  <hr>
-  <h3>Eklenen Ürünler</h3>
-  <div id="preview"></div>
+  <div class="admin-panel">
+    <h2 style="text-align:center">Ürün Yönetimi</h2>
+    <div class="tabs" id="tabs"></div>
+    <div id="tabContents"></div>
+  </div>
+
   <script>
-    fetch('/products.json')
-      .then(res => res.json())
-      .then(data => {
-        let html = '';
-        data.forEach(p => {
-          html += `
-            <div style="margin-bottom:20px;">
-              <img src="${p.image}" alt="${p.name}" width="200"><br>
-              <strong>${p.name}</strong><br>
-              ${p.price ? `₺${p.price}` : `<em>Teklif Al</em>`}
-            </div>
-          `;
-        });
-        document.getElementById('preview').innerHTML = html;
-      });
+    const tabContainer = document.getElementById("tabs");
+    const tabContents = document.getElementById("tabContents");
+
+    for (let i = 1; i <= 10; i++) {
+      const tab = document.createElement("button");
+      tab.className = "tab";
+      tab.innerText = `${i}. Ürün`;
+      tab.onclick = () => activateTab(i);
+      tabContainer.appendChild(tab);
+
+      const content = document.createElement("div");
+      content.className = "tab-content";
+      content.id = `tab${i}`;
+      content.innerHTML = `
+        <div class="form-group">
+          <label>Ürün Görseli:</label>
+          <input type="file" accept="image/*" onchange="previewImage(event, 'preview${i}')">
+          <img id="preview${i}" class="preview-img">
+        </div>
+        <div class="form-group">
+          <label>Ürün Adı:</label>
+          <input type="text" placeholder="Ürün adını girin" id="name${i}">
+        </div>
+        <div class="form-group">
+          <label>Fiyat:</label>
+          <input type="number" placeholder="Fiyatı girin" id="price${i}">
+        </div>
+        <button class="save-button" onclick="saveProduct(${i})">Kaydet</button>
+        <div id="message${i}" class="error-message"></div>
+      `;
+      tabContents.appendChild(content);
+    }
+
+    function activateTab(index) {
+      const contents = document.querySelectorAll(".tab-content");
+      contents.forEach(c => c.classList.remove("active"));
+      document.getElementById(`tab${index}`).classList.add("active");
+    }
+
+    function previewImage(event, previewId) {
+      const reader = new FileReader();
+      reader.onload = function(){
+        const output = document.getElementById(previewId);
+        output.src = reader.result;
+        output.style.display = 'block';
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
+    function saveProduct(index) {
+      const name = document.getElementById(`name${index}`).value;
+      const price = document.getElementById(`price${index}`).value;
+      const messageBox = document.getElementById(`message${index}`);
+
+      if (!name || !price) {
+        messageBox.innerText = "Lütfen tüm alanları doldurun.";
+        return;
+      }
+
+      messageBox.className = "success-message";
+      messageBox.innerText = "Ürün başarıyla kaydedildi.";
+      setTimeout(() => messageBox.innerText = '', 3000);
+    }
   </script>
 </body>
 </html>
