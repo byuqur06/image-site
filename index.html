@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gariban Sefa - Ürünler</title>
+  <title>Gariban Sefa</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
@@ -171,33 +171,6 @@
   <div id="imageModal" class="modal">
     <span class="close" onclick="closeModal()">&times;</span>
     <img class="modal-content" id="modalImage">
-  </div>
-
-  <script>
-    fetch('/products.json')
-      .then(res => res.json())
-      .then(data => {
-        let html = '';
-        data.forEach(p => {
-          html += `
-            <div class="product">
-              <img src="${p.image}" alt="${p.name}" onclick="openModal('${p.image}')">
-              <strong>${p.name}</strong>
-              ${p.price ? `₺${p.price}` : `<em>Teklif Al</em>`}
-            </div>
-          `;
-        });
-        document.getElementById('products').innerHTML = html;
-      });
-
-    function openModal(src) {
-      document.getElementById("modalImage").src = src;
-      document.getElementById("imageModal").style.display = "block";
-    }
-
-    function closeModal() {
-      document.getElementById("imageModal").style.display = "none";
-    }
-  </script>
+  </div> 
 </body>
 </html>
