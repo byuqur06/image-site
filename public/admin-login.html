@@ -63,22 +63,11 @@
 
   <div class="login-container">
     <h2>Sefa Bey Giriş</h2>
-    <input type="password" id="password" placeholder="Şifre">
-    <button id="loginBtn">Giriş Yap</button>
+    <form action="/door" method="POST">
+      <input type="password" name="sifre" placeholder="Şifre" required>
+      <button type="submit">Giriş Yap</button>
+    </form>
   </div>
-
-  <script>
-    document.getElementById("loginBtn").addEventListener("click", function() {
-      const password = document.getElementById("password").value;
-
-      if (password === "sefabey123") {
-        alert("Admin panele yönlendiriliyorsunuz...");
-        window.location.href = "admin-panel.html";
-      } else {
-        alert("Hatalı şifre!");
-      }
-    });
-  </script>
 
 </body>
 </html>
