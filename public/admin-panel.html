@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel</title>
+</head>
+<body>
+  <h2>Ürün Ekle (Link ile)</h2>
+  <form action="/add" method="POST">
+    <input type="text" name="name" placeholder="Ürün adı">
+    <input type="text" name="price" placeholder="Fiyat (boşsa teklif al)">
+    <input type="text" name="image" placeholder="Görsel URL (https://...)">
+    <button type="submit">Kaydet</button>
+  </form>
+  <hr>
+  <h3>Eklenen Ürünler</h3>
+  <div id="preview"></div>
+  <script>
+    fetch('/products.json')
+      .then(res => res.json())
+      .then(data => {
+        let html = '';
+        data.forEach(p => {
+          html += `
+            <div style="margin-bottom:20px;">
+              <img src="${p.image}" alt="${p.name}" width="200"><br>
+              <strong>${p.name}</strong><br>
+              ${p.price ? `₺${p.price}` : `<em>Teklif Al</em>`}
+            </div>
+          `;
+        });
+        document.getElementById('preview').innerHTML = html;
+      });
+  </script>
+</body>
+</html>
