@@ -6,3 +6,7 @@ app.post("/door", express.json(), (req, res) => {
     res.status(401).send("Hatalı şifre! <a href='/door'>Geri dön</a>");
   }
 });
+// Diğer route'ların altına ekleyin
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
