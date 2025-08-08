@@ -1,51 +1,25 @@
-// server.js
-const express = require("express");
-const fs = require("fs");
-const path = require("path");
-const app = express();
-const port = process.env.PORT || 3000;
+// static.js
+fetch('/products.json')
+  .then(res => res.json())
+  .then(data => {
+    let html = '';
+    data.forEach(p => {
+      html += `
+        <div class="product">
+          <img src="${p.image}" alt="${p.name}" onclick="openModal('${p.image}')">
+          <strong>${p.name}</strong>
+          ${p.price ? `₺${p.price}` : `<em>Teklif Al</em>`}
+        </div>
+      `;
+    });
+    document.getElementById('products').innerHTML = html;
+  });
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.static("public"));
-app.use(express.static("main")); // main klasörünü de static yap
+function openModal(src) {
+  document.getElementById("modalImage").src = src;
+  document.getElementById("imageModal").style.display = "block";
+}
 
-const PASSWORD = "gariban123";
-const DATA_FILE = path.join(__dirname, "products.json");
-
-app.get("/door", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "admin-login.html"));
-});
-
-app.post("/door", (req, res) => {
-  const { sifre } = req.body;
-  if (sifre === PASSWORD) {
-    res.sendFile(path.join(__dirname, "public", "admin-panel.html"));
-  } else {
-    res.status(401).send("Hatalı şifre! <a href='/door'>Geri dön</a>");
-  }
-});
-
-app.post("/add", (req, res) => {
-  const { name, price, image } = req.body;
-  const products = fs.existsSync(DATA_FILE) ? JSON.parse(fs.readFileSync(DATA_FILE)) : [];
-  const id = products.length + 1;
-  products.push({ id, name, price, image });
-  fs.writeFileSync(DATA_FILE, JSON.stringify(products, null, 2));
-  res.redirect("/door");
-});
-
-app.get("/products.json", (req, res) => {
-  const products = fs.existsSync(DATA_FILE) ? fs.readFileSync(DATA_FILE) : "[]";
-  res.setHeader("Content-Type", "application/json");
-  res.send(products);
-});
-
-// Ana sayfayı root yoluna yönlendir (main klasöründen)
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "main", "index.html"));
-});
-
-app.listen(port, () => {
-  console.log(`Sunucu ${port} portunda çalışıyor.`);
-});
+function closeModal() {
+  document.getElementById("imageModal").style.display = "none";
+}
