@@ -8,6 +8,7 @@ const port = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
+app.use(express.static("main")); // main klasörünü de static yap
 
 const PASSWORD = "gariban123";
 const DATA_FILE = path.join(__dirname, "products.json");
@@ -40,9 +41,9 @@ app.get("/products.json", (req, res) => {
   res.send(products);
 });
 
-// Ana sayfayı root yoluna yönlendir
+// Ana sayfayı root yoluna yönlendir (main klasöründen)
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, "main", "index.html"));
 });
 
 app.listen(port, () => {
