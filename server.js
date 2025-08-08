@@ -1,4 +1,22 @@
-app.post("/door", express.json(), (req, res) => {
+// server.js
+const express = require("express");
+const fs = require("fs");
+const path = require("path");
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.static("public"));
+
+const PASSWORD = "gariban123";
+const DATA_FILE = path.join(__dirname, "products.json");
+
+app.get("/door", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin-login.html"));
+});
+
+app.post("/door", (req, res) => {
   const { sifre } = req.body;
   if (sifre === PASSWORD) {
     res.sendFile(path.join(__dirname, "public", "admin-panel.html"));
@@ -6,7 +24,27 @@ app.post("/door", express.json(), (req, res) => {
     res.status(401).send("Hatalı şifre! <a href='/door'>Geri dön</a>");
   }
 });
-// Diğer route'ların altına ekleyin
+
+app.post("/add", (req, res) => {
+  const { name, price, image } = req.body;
+  const products = fs.existsSync(DATA_FILE) ? JSON.parse(fs.readFileSync(DATA_FILE)) : [];
+  const id = products.length + 1;
+  products.push({ id, name, price, image });
+  fs.writeFileSync(DATA_FILE, JSON.stringify(products, null, 2));
+  res.redirect("/door");
+});
+
+app.get("/products.json", (req, res) => {
+  const products = fs.existsSync(DATA_FILE) ? fs.readFileSync(DATA_FILE) : "[]";
+  res.setHeader("Content-Type", "application/json");
+  res.send(products);
+});
+
+// Ana sayfayı root yoluna yönlendir
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+app.listen(port, () => {
+  console.log(`Sunucu ${port} portunda çalışıyor.`);
 });
