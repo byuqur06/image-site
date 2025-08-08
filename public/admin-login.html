@@ -65,15 +65,16 @@
   </div>
 
   <script>
-    function checkLogin() {
-      const password = document.getElementById("password").value;
-      if(password === "gariban123") {
-        alert("Giriş başarılı! Admin paneline yönlendiriliyorsunuz...");
-        window.location.href = "/door";
-      } else {
-        alert("Şifre yanlış!");
-      }
+  document.getElementById("loginBtn").addEventListener("click", function() {
+    const password = document.getElementById("password").value;
+
+    if (password === "sefabey123") {  // <- Buraya doğru şifreyi yaz
+      alert("Admin panele yönlendiriliyorsunuz...");
+      window.location.href = "admin-panel.html"; // Bu dosya zaten public klasöründe
+    } else {
+      alert("Hatalı şifre girdiniz!");
     }
-  </script>
+  });
+</script>
 </body>
 </html>
