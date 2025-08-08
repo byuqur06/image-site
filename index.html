@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gariban Sefa</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gariban Sefa - Ürünler</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700&display=swap');
 
@@ -13,31 +13,28 @@
       box-sizing: border-box;
     }
 
-    html, body {
-      width: 100%;
-      height: 100%;
+    body {
       font-family: 'Nunito', sans-serif;
       background-color: #075E54;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .container {
-      text-align: center;
       color: white;
-      max-width: 400px;
-      width: 90%;
       padding: 20px;
     }
 
-    .title {
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
       font-size: 36px;
-      font-weight: 700;
-      margin-bottom: 10px;
       animation: slideIn 2s ease forwards;
       white-space: nowrap;
       overflow: hidden;
+    }
+
+    .slogan {
+      font-size: 16px;
+      color: #d4f3e3;
     }
 
     @keyframes slideIn {
@@ -51,73 +48,119 @@
       }
     }
 
-    .slogan {
-      font-size: 16px;
-      color: #d4f3e3;
-      margin-bottom: 30px;
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
     }
 
-    .profile-img {
-      width: 160px;
-      height: 160px;
-      border-radius: 50%;
-      border: 4px solid #25D366;
+    .product {
+      background-color: #fff;
+      color: #333;
+      border-radius: 10px;
+      overflow: hidden;
+      text-align: center;
+      padding-bottom: 20px;
+    }
+
+    .product img {
+      width: 100%;
+      height: 180px;
       object-fit: cover;
-      margin-bottom: 25px;
-      transition: transform 0.3s ease;
     }
 
-    .profile-img:hover {
-      transform: scale(1.1);
+    .product-name {
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 10px;
     }
 
-    .info-text {
-      font-size: 18px;
-      margin-bottom: 15px;
+    .product-price {
+      margin: 10px 0;
+      font-size: 15px;
     }
 
-    .whatsapp-button {
+    .offer-btn {
       background-color: #25D366;
       color: white;
-      padding: 16px 32px;
-      font-size: 18px;
+      padding: 10px 20px;
+      font-size: 14px;
       border: none;
-      border-radius: 10px;
+      border-radius: 6px;
       text-decoration: none;
       display: inline-block;
-      transition: background-color 0.3s ease;
     }
 
-    .whatsapp-button:hover {
+    .offer-btn:hover {
       background-color: #1ebe5b;
     }
 
-    @media (max-width: 500px) {
-      .title {
-        font-size: 28px;
-      }
-      .info-text,
-      .slogan {
-        font-size: 15px;
-      }
-      .whatsapp-button {
-        font-size: 16px;
-        padding: 14px 24px;
-      }
-      .profile-img {
-        width: 120px;
-        height: 120px;
-      }
+    .admin-panel {
+      background: white;
+      color: black;
+      padding: 20px;
+      margin-top: 50px;
+      border-radius: 10px;
+      display: none; /* Başlangıçta gizli */
+    }
+
+    .admin-panel h2 {
+      margin-bottom: 10px;
+    }
+
+    .admin-panel input {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
     }
   </style>
+  <script>
+    function showAdminPanel() {
+      const password = prompt("Yönetici şifresini girin:");
+      if (password === "admin123") {
+        document.querySelector('.admin-panel').style.display = 'block';
+      } else {
+        alert("Şifre yanlış.");
+      }
+    }
+  </script>
 </head>
 <body>
-  <div class="container">
-    <div class="title">GARİBAN SEFA</div>
+  <div class="header">
+    <h1>GARİBAN SEFA</h1>
     <div class="slogan">Elektronik Aksesuarların En Uygun Adresi</div>
-    <img src="profile.jpg" alt="Profil Fotoğrafı" class="profile-img" />
-    <div class="info-text">Sipariş ve bilgi için bizimle iletişime geçin</div>
-    <a class="whatsapp-button" href="https://wa.me/905438163315" target="_blank">İletişime Geç</a>
+  </div>
+
+  <div class="products">
+    <!-- Ürün örneği -->
+    <div class="product">
+      <img src="urun1.jpg" alt="Ürün 1" />
+      <div class="product-name">Ürün Adı 1</div>
+      <div class="product-price">₺149,90</div>
+    </div>
+
+    <div class="product">
+      <img src="urun2.jpg" alt="Ürün 2" />
+      <div class="product-name">Ürün Adı 2</div>
+      <a class="offer-btn" href="https://wa.me/905XXXXXXXXX?text=Ürün hakkında teklif istiyorum: Ürün Adı 2" target="_blank">Teklif Al</a>
+    </div>
+  </div>
+
+  <!-- Admin paneli tetikleyici buton -->
+  <div style="text-align: center; margin-top: 30px;">
+    <button onclick="showAdminPanel()" style="padding: 10px 20px; font-size: 16px; background: #25D366; border: none; border-radius: 6px; color: white; cursor: pointer;">Admin Girişi</button>
+  </div>
+
+  <!-- Admin Panel (şifre ile açılır) -->
+  <div class="admin-panel">
+    <h2>Admin Panel</h2>
+    <p>Ürün görseli, adı ve fiyat girin:</p>
+    <input type="file" accept="image/*" />
+    <input type="text" placeholder="Ürün Adı" />
+    <input type="text" placeholder="Fiyat (örn: 199.90 veya boş bırak)" />
+    <button>Kaydet</button>
   </div>
 </body>
 </html>
