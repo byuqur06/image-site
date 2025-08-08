@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gariban Sefa - Giriş</title>
+  <title>Sefa Bey Giriş</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
@@ -12,69 +12,73 @@
       padding: 0;
       font-family: 'Roboto', sans-serif;
       background-color: #25D366;
-      color: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
-    .admin-login {
-      background-color: #ffffff;
+
+    .login-container {
+      background-color: #fff;
       color: #000;
-      width: 100%;
-      max-width: 400px;
-      padding: 30px;
+      padding: 40px;
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(0,0,0,0.2);
-      font-size: 16px;
-    }
-    .admin-login h2 {
+      width: 100%;
+      max-width: 400px;
       text-align: center;
+    }
+
+    h2 {
       margin-bottom: 20px;
     }
-    .admin-login input {
+
+    input[type="password"] {
       width: 100%;
-      padding: 10px;
-      margin: 10px 0;
+      padding: 12px;
+      margin-bottom: 20px;
       border: 1px solid #ccc;
       border-radius: 5px;
-      font-size: 15px;
+      font-size: 16px;
     }
-    .admin-login button {
+
+    button {
       background-color: #25D366;
       color: white;
-      border: none;
       padding: 12px 20px;
-      border-radius: 6px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
       font-weight: bold;
       font-size: 16px;
-      cursor: pointer;
-      transition: transform 0.3s;
-      width: 100%;
+      transition: transform 0.2s;
     }
-    .admin-login button:hover {
+
+    button:hover {
       transform: scale(1.05);
     }
   </style>
 </head>
 <body>
-  <div class="admin-login">
+
+  <div class="login-container">
     <h2>Sefa Bey Giriş</h2>
     <input type="password" id="password" placeholder="Şifre">
-    <button onclick="checkLogin()">Giriş Yap</button>
+    <button id="loginBtn">Giriş Yap</button>
   </div>
 
   <script>
-  document.getElementById("loginBtn").addEventListener("click", function() {
-    const password = document.getElementById("password").value;
+    document.getElementById("loginBtn").addEventListener("click", function() {
+      const password = document.getElementById("password").value;
 
-    if (password === "sefabey123") {  // <- Buraya doğru şifreyi yaz
-      alert("Admin panele yönlendiriliyorsunuz...");
-      window.location.href = "admin-panel.html"; // Bu dosya zaten public klasöründe
-    } else {
-      alert("Hatalı şifre girdiniz!");
-    }
-  });
-</script>
+      if (password === "sefabey123") {
+        alert("Admin panele yönlendiriliyorsunuz...");
+        window.location.href = "admin-panel.html";
+      } else {
+        alert("Hatalı şifre!");
+      }
+    });
+  </script>
+
 </body>
 </html>
